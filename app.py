@@ -12,7 +12,13 @@ from data.products import (
     CATEGORY_LABELS,
 )
 
-app = Flask(__name__)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+app = Flask(
+    __name__,
+    template_folder=os.path.join(BASE_DIR, "templates"),
+    static_folder=os.path.join(BASE_DIR, "static")
+)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "hypeware-secret-key-2026")
 
 VALID_GENDERS = {"pria", "wanita", "anak", "bayi"}

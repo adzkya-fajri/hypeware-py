@@ -42,4 +42,3 @@ postcss.config.js
 tailwind.config.js
 vite.config.js
 netlify.toml
-vercel.json
