@@ -24,6 +24,7 @@ app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "hypeware-secret-key-202
 VALID_GENDERS = {"pria", "wanita", "anak", "bayi"}
 
 @app.route("/")
+@app.route("/api/index")
 def index():
     all_items = get_all_products()
     # Featured products: first 8 products
