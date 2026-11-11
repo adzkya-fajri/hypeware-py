@@ -1,14 +1,45 @@
+# Environment & Cache
 node_modules
 .env
 .env.local
 .env.*.local
 dist
 *.log
-
-# Python & Pytest
 __pycache__/
 *.py[cod]
 *$py.class
 .pytest_cache/
 .venv/
 .superpowers/
+
+# Legacy static files (replaced by Flask app.py, templates/, and static/)
+airi.html
+colection_anak.html
+colection_bayi.html
+colection_pria.html
+colection_wanita.html
+collection-core.js
+collection-loader.js
+customer profile.html
+desc.item.html
+entry-colection-*.js
+footer.js
+index.html
+keranjang.html
+navbar/
+colectiondata/
+custome/
+asset/
+search fitur.html
+start-dev.bat
+studio.html
+test-cart.html
+test-product.html
+produk.js
+package.json
+package-lock.json
+postcss.config.js
+tailwind.config.js
+vite.config.js
+netlify.toml
+vercel.json
