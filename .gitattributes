@@ -1,6 +1,9 @@
 # GitHub Linguist Overrides
-# Mark Jinja2 templates and static assets so GitHub identifies this project primarily as Python
-templates/* linguist-detectable=false
-templates/**/* linguist-detectable=false
-static/* linguist-detectable=false
-static/**/* linguist-detectable=false
+# Exclude templates and static assets from repository language statistics so GitHub identifies this project as Python
+
+templates/* linguist-vendored
+templates/**/* linguist-vendored
+static/* linguist-vendored
+static/**/* linguist-vendored
+docs/* linguist-documentation
+docs/**/* linguist-documentation
