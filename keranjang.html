@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keranjang Belanja - Hypeware</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#EE0000",
+              "background-light": "#FFFFFF",
+              "background-dark": "#121212",
+            },
+            fontFamily: {
+              display: ["Oswald", "sans-serif"],
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-black dark:text-white font-sans">
+
+    <!-- Header -->
+    <header class="bg-white dark:bg-background-dark border-b border-gray-100 dark:border-stone-800">
+        <nav class="container mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-4">
+                <div class="text-2xl font-display font-bold tracking-tighter text-primary cursor-pointer">
+                    HYPEWARE
+                </div>
+            </a>
+            
+            <div class="flex items-center space-x-5">
+                <a href="index.html" class="text-sm font-medium hover:text-primary">Beranda</a>
+                <span class="material-icons-outlined cursor-pointer hover:text-primary">search</span>
+                <div class="relative">
+                    <span class="material-icons-outlined cursor-pointer hover:text-primary">shopping_bag</span>
+                    <span class="cart-badge absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8">
+        <div class="max-w-6xl mx-auto">
+            
+            <!-- Page Title -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold mb-2">Keranjang Belanja</h1>
+                <p class="text-gray-600 dark:text-gray-400">Review produk yang akan Anda beli</p>
+            </div>
+
+            <!-- Cart Content -->
+            <div class="grid lg:grid-cols-3 gap-8">
+                
+                <!-- Cart Items -->
+                <div class="lg:col-span-2">
+                    <div id="cart-items" class="space-y-4">
+                        <!-- Cart items akan di-render di sini -->
+                    </div>
+                    
+                    <!-- Empty Cart Message -->
+                    <div id="empty-cart" class="text-center py-12 hidden">
+                        <span class="material-icons-outlined text-6xl text-gray-300 mb-4">shopping_cart</span>
+                        <h3 class="text-xl font-semibold mb-2">Keranjang Anda Kosong</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-6">Mulai berbelanja dan tambahkan produk ke keranjang</p>
+                        <a href="index.html" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-red-600 transition">
+                            Mulai Belanja
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="lg:col-span-1">
+                    <div class="bg-gray-50 dark:bg-stone-900 rounded-lg p-6 sticky top-6">
+                        <h3 class="text-lg font-semibold mb-4">Ringkasan Pesanan</h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex justify-between">
+                                <span>Subtotal (<span id="total-items">0</span> item)</span>
+                                <span id="subtotal">Rp0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Ongkos Kirim</span>
+                                <span class="text-green-600">GRATIS</span>
+                            </div>
+                            <hr class="border-gray-200 dark:border-stone-700">
+                            <div class="flex justify-between font-semibold text-lg">
+                                <span>Total</span>
+                                <span id="total-price" class="text-primary">Rp0</span>
+                            </div>
+                        </div>
+
+                        <!-- Customer Form -->
+                        <div class="mb-6">
+                            <h4 class="font-semibold mb-3">Data Pengiriman</h4>
+                            <form id="customer-form" class="space-y-3">
+                                <input type="text" id="customer-name" placeholder="Nama Lengkap" required
+                                       class="w-full px-3 py-2 border border-gray-300 dark:border-stone-600 rounded-lg bg-white dark:bg-stone-800 text-sm">
+                                <input type="tel" id="customer-phone" placeholder="No. WhatsApp" required
+                                       class="w-full px-3 py-2 border border-gray-300 dark:border-stone-600 rounded-lg bg-white dark:bg-stone-800 text-sm">
+                                <textarea id="customer-address" placeholder="Alamat Lengkap" required rows="2"
+                                          class="w-full px-3 py-2 border border-gray-300 dark:border-stone-600 rounded-lg bg-white dark:bg-stone-800 text-sm"></textarea>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <input type="text" id="customer-city" placeholder="Kota" required
+                                           class="px-3 py-2 border border-gray-300 dark:border-stone-600 rounded-lg bg-white dark:bg-stone-800 text-sm">
+                                    <input type="text" id="customer-postal" placeholder="Kode Pos" required
+                                           class="px-3 py-2 border border-gray-300 dark:border-stone-600 rounded-lg bg-white dark:bg-stone-800 text-sm">
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="space-y-3">
+                            <button id="checkout-btn" 
+                                    class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-red-600 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                                Pesan via WhatsApp
+                            </button>
+                            <button id="quick-order-btn"
+                                    class="w-full border border-primary text-primary py-3 rounded-lg font-semibold hover:bg-primary hover:text-white transition">
+                                Pesan Cepat (Tanpa Form)
+                            </button>
+                            <button id="clear-cart-btn"
+                                    class="w-full text-gray-600 dark:text-gray-400 py-2 text-sm hover:text-red-600 transition">
+                                Kosongkan Keranjang
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Scripts -->
+    <script type="module" src="produk.js"></script>
+    <script src="footer.js"></script>
+    
+    <script>
+        // Cart page specific functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Cart page loaded');
+            // Tunggu sebentar untuk memastikan produk.js sudah load
+            setTimeout(() => {
+                renderCartPage();
+                setupCartEventListeners();
+            }, 100);
+        });
+
+        function renderCartPage() {
+            console.log('Rendering cart page...');
+            
+            if (!window.hypewareProducts || !window.hypewareProducts.cart) {
+                console.log('Cart system not ready, retrying...');
+                setTimeout(renderCartPage, 100);
+                return;
+            }
+
+            const cart = window.hypewareProducts.cart;
+            const cartItemsContainer = document.getElementById('cart-items');
+            const emptyCartMessage = document.getElementById('empty-cart');
+            
+            console.log('Cart items:', cart.items);
+            
+            if (cart.items.length === 0) {
+                cartItemsContainer.classList.add('hidden');
+                emptyCartMessage.classList.remove('hidden');
+                updateOrderSummary();
+                return;
+            }
+
+            cartItemsContainer.classList.remove('hidden');
+            emptyCartMessage.classList.add('hidden');
+
+            cartItemsContainer.innerHTML = cart.items.map((item, index) => `
+                <div class="bg-white dark:bg-stone-900 rounded-lg p-4 shadow-sm border border-gray-100 dark:border-stone-800" data-item-id="${item.id}">
+                    <div class="flex gap-4">
+                        <!-- Product Image -->
+                        <div class="flex-shrink-0">
+                            <img src="${item.img}" alt="${item.nama}" class="w-24 h-24 object-cover rounded-lg">
+                        </div>
+                        
+                        <!-- Product Info -->
+                        <div class="flex-1 min-w-0">
+                            <h4 class="font-semibold text-lg mb-1 truncate">${item.nama}</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">${item.gender} | ${getCategoryName(item.category)}</p>
+                            <div class="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400 mb-3">
+                                <span class="bg-gray-100 dark:bg-stone-800 px-2 py-1 rounded">Ukuran: ${item.size}</span>
+                                <span class="bg-gray-100 dark:bg-stone-800 px-2 py-1 rounded">Warna: ${item.color}</span>
+                            </div>
+                            <p class="font-bold text-lg text-primary">${item.harga}</p>
+                        </div>
+                        
+                        <!-- Quantity Controls & Actions -->
+                        <div class="flex flex-col items-end gap-3">
+                            <!-- Quantity Controls -->
+                            <div class="flex items-center gap-2 bg-gray-50 dark:bg-stone-800 rounded-lg p-1">
+                                <button onclick="updateCartQuantity('${item.id}', ${item.quantity - 1})" 
+                                        data-item-id="${item.id}" data-action="decrease"
+                                        class="w-8 h-8 rounded-md border border-gray-300 dark:border-stone-600 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-stone-700 transition ${item.quantity <= 1 ? 'opacity-50 cursor-not-allowed' : ''}"
+                                        ${item.quantity <= 1 ? 'disabled' : ''}>
+                                    <span class="material-icons-outlined text-sm">remove</span>
+                                </button>
+                                <span class="w-8 text-center font-semibold quantity-display" data-item-id="${item.id}">${item.quantity}</span>
+                                <button onclick="updateCartQuantity('${item.id}', ${item.quantity + 1})" 
+                                        data-item-id="${item.id}" data-action="increase"
+                                        class="w-8 h-8 rounded-md border border-gray-300 dark:border-stone-600 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-stone-700 transition">
+                                    <span class="material-icons-outlined text-sm">add</span>
+                                </button>
+                            </div>
+                            
+                            <!-- Subtotal for this item -->
+                            <div class="text-sm text-gray-600 dark:text-gray-400">
+                                Subtotal: <span class="font-semibold subtotal-display" data-item-id="${item.id}">Rp${(item.priceNumeric * item.quantity).toLocaleString('id-ID')}</span>
+                            </div>
+                            
+                            <!-- Remove Button -->
+                            <button onclick="removeCartItem('${item.id}')" 
+                                    data-item-id="${item.id}" data-action="remove"
+                                    class="flex items-center gap-1 text-red-600 hover:text-red-800 text-sm font-medium transition">
+                                <span class="material-icons-outlined text-sm">delete</span>
+                                Hapus
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            updateOrderSummary();
+        }
+
+        function updateOrderSummary() {
+            if (!window.hypewareProducts || !window.hypewareProducts.cart) return;
+            
+            const cart = window.hypewareProducts.cart;
+            const totalItems = cart.getTotalItems();
+            const total = cart.getTotal();
+
+            document.getElementById('total-items').textContent = totalItems;
+            document.getElementById('subtotal').textContent = `Rp${total.toLocaleString('id-ID')}`;
+            document.getElementById('total-price').textContent = `Rp${total.toLocaleString('id-ID')}`;
+
+            // Enable/disable checkout buttons
+            const checkoutBtn = document.getElementById('checkout-btn');
+            const quickOrderBtn = document.getElementById('quick-order-btn');
+            
+            if (totalItems === 0) {
+                checkoutBtn.disabled = true;
+                quickOrderBtn.disabled = true;
+            } else {
+                checkoutBtn.disabled = false;
+                quickOrderBtn.disabled = false;
+            }
+        }
+
+        function updateCartQuantity(cartItemId, newQuantity) {
+            console.log('=== UPDATE QUANTITY DEBUG ===');
+            console.log('Cart Item ID:', cartItemId);
+            console.log('New Quantity:', newQuantity);
+            
+            if (!window.hypewareProducts || !window.hypewareProducts.cart) {
+                console.log('Cart system not available');
+                alert('Sistem keranjang belum siap, coba lagi sebentar.');
+                return;
+            }
+            
+            const cart = window.hypewareProducts.cart;
+            console.log('Current cart items before update:', cart.items);
+            
+            // Cari item berdasarkan ID
+            const item = cart.items.find(item => item.id == cartItemId);
+            console.log('Found item:', item);
+            
+            if (!item) {
+                console.log('Item not found with ID:', cartItemId);
+                alert('Produk tidak ditemukan di keranjang');
+                return;
+            }
+            
+            // Update quantity
+            cart.updateQuantity(cartItemId, newQuantity);
+            
+            console.log('Cart items after update:', cart.items);
+            console.log('=== END UPDATE QUANTITY DEBUG ===');
+            
+            // Show notification
+            if (window.hypewareProducts.showNotification) {
+                if (newQuantity === 0) {
+                    window.hypewareProducts.showNotification('Produk dihapus dari keranjang', 'info');
+                } else {
+                    window.hypewareProducts.showNotification('Kuantitas diperbarui', 'success');
+                }
+            }
+            
+            // Re-render cart page
+            setTimeout(() => {
+                renderCartPage();
+            }, 100);
+        }
+
+        function removeCartItem(cartItemId) {
+            console.log('=== REMOVE ITEM DEBUG ===');
+            console.log('Cart Item ID to remove:', cartItemId);
+            
+            if (!confirm('Yakin ingin menghapus produk ini dari keranjang?')) {
+                return;
+            }
+            
+            if (!window.hypewareProducts || !window.hypewareProducts.cart) {
+                console.log('Cart system not available');
+                alert('Sistem keranjang belum siap, coba lagi sebentar.');
+                return;
+            }
+            
+            const cart = window.hypewareProducts.cart;
+            console.log('Current cart items before remove:', cart.items);
+            
+            // Cari item berdasarkan ID
+            const item = cart.items.find(item => item.id == cartItemId);
+            console.log('Found item to remove:', item);
+            
+            if (!item) {
+                console.log('Item not found with ID:', cartItemId);
+                alert('Produk tidak ditemukan di keranjang');
+                return;
+            }
+            
+            // Remove item
+            cart.removeItem(cartItemId);
+            
+            console.log('Cart items after remove:', cart.items);
+            console.log('=== END REMOVE ITEM DEBUG ===');
+            
+            // Show notification
+            if (window.hypewareProducts.showNotification) {
+                window.hypewareProducts.showNotification('Produk dihapus dari keranjang', 'info');
+            }
+            
+            // Re-render cart page
+            setTimeout(() => {
+                renderCartPage();
+            }, 100);
+        }
+
+        function getCategoryName(category) {
+            const categoryNames = {
+                'bjp': 'Kaos',
+                'km': 'Kemeja',
+                'op': 'Outerwear',
+                'dr': 'Dress',
+                'ro': 'Rok',
+                'cl': 'Celana',
+                'bj': 'Baju'
+            };
+            return categoryNames[category] || category;
+        }
+
+        function setupCartEventListeners() {
+            if (!window.hypewareProducts || !window.hypewareProducts.orderSystem) {
+                console.log('Order system not ready, retrying...');
+                setTimeout(setupCartEventListeners, 100);
+                return;
+            }
+            
+            const orderSystem = window.hypewareProducts.orderSystem;
+            
+            // Checkout with form
+            document.getElementById('checkout-btn').addEventListener('click', function() {
+                const customerData = {
+                    nama: document.getElementById('customer-name').value.trim(),
+                    phone: document.getElementById('customer-phone').value.trim(),
+                    alamat: document.getElementById('customer-address').value.trim(),
+                    kota: document.getElementById('customer-city').value.trim(),
+                    kodePos: document.getElementById('customer-postal').value.trim()
+                };
+
+                // Validate form
+                if (!customerData.nama || !customerData.phone || !customerData.alamat || !customerData.kota) {
+                    alert('Mohon lengkapi semua data pengiriman!');
+                    return;
+                }
+
+                // Validate phone number
+                if (!/^(\+62|62|0)[0-9]{9,13}$/.test(customerData.phone.replace(/\s/g, ''))) {
+                    alert('Nomor WhatsApp tidak valid! Gunakan format: 08xxxxxxxxx atau +628xxxxxxxxx');
+                    return;
+                }
+
+                orderSystem.checkout(customerData);
+            });
+
+            // Quick order without form
+            document.getElementById('quick-order-btn').addEventListener('click', function() {
+                if (!window.hypewareProducts.cart.items.length) {
+                    alert('Keranjang belanja kosong!');
+                    return;
+                }
+                
+                orderSystem.sendOrderToWhatsApp();
+            });
+
+            // Clear cart
+            document.getElementById('clear-cart-btn').addEventListener('click', function() {
+                if (!confirm('Yakin ingin mengosongkan keranjang? Semua produk akan dihapus.')) {
+                    return;
+                }
+                
+                const cart = window.hypewareProducts.cart;
+                cart.clearCart();
+                
+                // Show notification
+                if (window.hypewareProducts.showNotification) {
+                    window.hypewareProducts.showNotification('Keranjang dikosongkan', 'info');
+                }
+                
+                renderCartPage();
+            });
+        }
+    </script>
+</body>
+</html>

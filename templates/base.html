@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>{% block title %}HYPEWARE | Modern Fashion Store{% endblock %}</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='asset/cowok/bajucwo1.jpg') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#EE0000",
+            "background-light": "#FFFFFF",
+            "background-dark": "#121212",
+          },
+          fontFamily: {
+            display: ["Oswald", "sans-serif"],
+            sans: ["Inter", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "0px",
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    #mega-menu {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: translateY(-10%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    #mega-menu.active {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #overlay {
+      transition: opacity 0.3s ease;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .product-card:hover .quick-add {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+  {% block head %}{% endblock %}
+</head>
+<body class="bg-background-light dark:bg-background-dark text-black dark:text-white font-sans overflow-x-hidden transition-colors duration-300">
+  <!-- Backdrop Overlay -->
+  <div id="overlay" class="fixed inset-0 bg-black/50 z-40 opacity-0 pointer-events-none"></div>
+
+  <!-- Announcement Bar -->
+  <div class="bg-stone-100 dark:bg-stone-900 py-2 text-center text-xs tracking-wider border-b border-gray-100 dark:border-stone-800">
+    <p>Gratis Ongkir ke seluruh Indonesia dengan min. pembelian Rp699.000</p>
+  </div>
+
+  <!-- Header Navigation -->
+  <header class="relative bg-white dark:bg-background-dark z-50 border-b border-gray-100 dark:border-stone-800">
+    <nav class="container mx-auto px-6 h-20 flex items-center justify-between">
+      <a href="{{ url_for('index') }}" class="flex items-center gap-3">
+        <div class="bg-primary text-white p-1 font-display font-bold text-lg leading-none tracking-tighter flex flex-col items-center justify-center w-8 h-8">
+          <span>HW</span>
+        </div>
+        <span class="text-2xl font-display font-bold tracking-tighter text-primary">HYPEWARE</span>
+      </a>
+
+      <!-- Category Links for Mega Menu -->
+      <ul class="hidden md:flex space-x-8 font-medium uppercase text-sm tracking-widest h-full items-center">
+        <li class="nav-item h-full flex items-center border-b-2 border-transparent hover:border-primary cursor-pointer transition-all" data-type="pria">
+          <a href="{{ url_for('collection', gender='pria') }}" class="h-full flex items-center">Pria</a>
+        </li>
+        <li class="nav-item h-full flex items-center border-b-2 border-transparent hover:border-primary cursor-pointer transition-all" data-type="wanita">
+          <a href="{{ url_for('collection', gender='wanita') }}" class="h-full flex items-center">Wanita</a>
+        </li>
+        <li class="nav-item h-full flex items-center border-b-2 border-transparent hover:border-primary cursor-pointer transition-all" data-type="anak">
+          <a href="{{ url_for('collection', gender='anak') }}" class="h-full flex items-center">Anak</a>
+        </li>
+        <li class="nav-item h-full flex items-center border-b-2 border-transparent hover:border-primary cursor-pointer transition-all" data-type="anak">
+          <a href="{{ url_for('collection', gender='bayi') }}" class="h-full flex items-center">Bayi</a>
+        </li>
+        <li class="h-full flex items-center border-b-2 border-transparent hover:border-primary cursor-pointer transition-all">
+          <a href="{{ url_for('studio') }}" class="h-full flex items-center text-primary font-bold">Studio Baju</a>
+        </li>
+      </ul>
+
+      <!-- Action Icons -->
+      <div class="flex items-center space-x-5">
+        <!-- Search Trigger / Link -->
+        <a href="{{ url_for('search') }}" class="text-slate-700 dark:text-slate-200 hover:text-primary transition" title="Cari Produk">
+          <span class="material-icons-outlined cursor-pointer">search</span>
+        </a>
+        
+        <!-- Cart Link -->
+        <a href="{{ url_for('cart') }}" class="relative text-slate-700 dark:text-slate-200 hover:text-primary transition" title="Keranjang Belanja">
+          <span class="material-icons-outlined cursor-pointer">shopping_bag</span>
+          <span class="cart-badge absolute -top-2 -right-2 bg-primary text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
+        </a>
+
+        <!-- Profile Link -->
+        <a href="{{ url_for('profile') }}" class="text-slate-700 dark:text-slate-200 hover:text-primary transition" title="Profil Akun">
+          <span class="material-icons-outlined cursor-pointer">person_outline</span>
+        </a>
+
+        <!-- Dark Mode Toggle -->
+        <button id="theme-toggle" class="p-2 bg-gray-100 dark:bg-stone-800 rounded-full hover:bg-gray-200 dark:hover:bg-stone-700 transition" title="Ubah Tema">
+          <span class="material-icons-outlined text-sm block dark:hidden">dark_mode</span>
+          <span class="material-icons-outlined text-sm hidden dark:block">light_mode</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Mega Menu Container -->
+    <div id="mega-menu" class="absolute top-20 left-0 w-full bg-white dark:bg-stone-900 shadow-2xl overflow-hidden z-50">
+      <div id="mega-menu-content" class="container mx-auto px-10 py-10 grid grid-cols-4 gap-8">
+        <div>
+          <h4 class="font-display text-lg mb-4 text-primary uppercase">Koleksi Pria</h4>
+          <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+            <li><a href="{{ url_for('collection', gender='pria') }}" class="hover:text-primary">Semua Pakaian Pria</a></li>
+            <li><a href="{{ url_for('collection', gender='pria') }}?cat=bjp" class="hover:text-primary">Kaos Streetwear</a></li>
+            <li><a href="{{ url_for('collection', gender='pria') }}?cat=km" class="hover:text-primary">Kemeja Casual & Flanel</a></li>
+            <li><a href="{{ url_for('collection', gender='pria') }}?cat=cl" class="hover:text-primary">Celana Panjang & Pendek</a></li>
+            <li><a href="{{ url_for('collection', gender='pria') }}?cat=op" class="hover:text-primary">Outerwear & Jaket</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-display text-lg mb-4 text-primary uppercase">Koleksi Wanita</h4>
+          <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+            <li><a href="{{ url_for('collection', gender='wanita') }}" class="hover:text-primary">Semua Pakaian Wanita</a></li>
+            <li><a href="{{ url_for('collection', gender='wanita') }}?cat=bj" class="hover:text-primary">Kaos & Atasan</a></li>
+            <li><a href="{{ url_for('collection', gender='wanita') }}?cat=dr" class="hover:text-primary">Dress Elegan</a></li>
+            <li><a href="{{ url_for('collection', gender='wanita') }}?cat=ro" class="hover:text-primary">Rok Minimalis</a></li>
+            <li><a href="{{ url_for('collection', gender='wanita') }}?cat=op" class="hover:text-primary">Outerwear Modis</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-display text-lg mb-4 text-primary uppercase">Anak & Bayi</h4>
+          <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+            <li><a href="{{ url_for('collection', gender='anak') }}" class="hover:text-primary">Koleksi Anak Laki & Perempuan</a></li>
+            <li><a href="{{ url_for('collection', gender='bayi') }}" class="hover:text-primary">Koleksi Pakaian Bayi Katun</a></li>
+            <li><a href="{{ url_for('studio') }}" class="hover:text-primary font-bold text-primary">Custom Desain Sendiri</a></li>
+          </ul>
+        </div>
+        <div class="relative bg-stone-100 dark:bg-stone-800 p-6 flex flex-col justify-end overflow-hidden group">
+          <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2071" alt="Promo" class="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-500">
+          <div class="relative z-10 text-white">
+            <span class="text-[10px] tracking-widest uppercase font-bold text-primary bg-black/60 px-2 py-0.5">Special Promo</span>
+            <h5 class="text-xl font-display font-bold mt-2">HYPEWARE STUDIO</h5>
+            <p class="text-xs text-white/90 mb-3">Rancang kaos unik Anda langsung dari browser.</p>
+            <a href="{{ url_for('studio') }}" class="bg-primary text-white text-xs font-bold px-4 py-2 hover:bg-black transition inline-block">Coba Sekarang</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Block -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-50 dark:bg-black pt-16 pb-10 border-t border-slate-200 dark:border-slate-800 mt-20">
+    <div class="max-w-[1440px] mx-auto px-6 md:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 mb-16">
+        <div class="col-span-2 lg:col-span-1">
+          <div class="bg-primary text-white p-1 leading-tight font-display text-lg uppercase flex flex-col items-center justify-center w-12 h-12 mb-6">
+            <span>Hype</span>
+            <span>Ware</span>
+          </div>
+          <p class="text-xs text-slate-500 leading-relaxed mb-6">
+            Kualitas pakaian yang dibuat untuk semua orang, di mana saja, setiap hari. Desain modern, bahan premium, potongan presisi.
+          </p>
+          <div class="flex gap-4">
+            <a class="text-slate-400 hover:text-primary transition-colors" href="#"><span class="material-icons-outlined">facebook</span></a>
+            <a class="text-slate-400 hover:text-primary transition-colors" href="#"><span class="material-icons-outlined">camera_alt</span></a>
+            <a class="text-slate-400 hover:text-primary transition-colors" href="#"><span class="material-icons-outlined">play_circle_outline</span></a>
+          </div>
+        </div>
+        <div>
+          <h4 class="font-bold text-xs uppercase tracking-widest mb-6">Koleksi</h4>
+          <ul class="space-y-3 text-sm text-slate-500 dark:text-slate-400">
+            <li><a class="hover:text-primary" href="{{ url_for('collection', gender='pria') }}">Pria</a></li>
+            <li><a class="hover:text-primary" href="{{ url_for('collection', gender='wanita') }}">Wanita</a></li>
+            <li><a class="hover:text-primary" href="{{ url_for('collection', gender='anak') }}">Anak-Anak</a></li>
+            <li><a class="hover:text-primary" href="{{ url_for('collection', gender='bayi') }}">Bayi</a></li>
+            <li><a class="hover:text-primary" href="{{ url_for('studio') }}">Studio Kustom</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-xs uppercase tracking-widest mb-6">Bantuan</h4>
+          <ul class="space-y-3 text-sm text-slate-500 dark:text-slate-400">
+            <li><a class="hover:text-primary" href="#">Status Pesanan</a></li>
+            <li><a class="hover:text-primary" href="#">Kebijakan Pengembalian</a></li>
+            <li><a class="hover:text-primary" href="#">Panduan Ukuran</a></li>
+            <li><a class="hover:text-primary" href="#">Hubungi Kami</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-xs uppercase tracking-widest mb-6">Akun & Fitur</h4>
+          <ul class="space-y-3 text-sm text-slate-500 dark:text-slate-400">
+            <li><a class="hover:text-primary" href="{{ url_for('profile') }}">Profil Saya</a></li>
+            <li><a class="hover:text-primary" href="{{ url_for('cart') }}">Keranjang Belanja</a></li>
+            <li><a class="hover:text-primary" href="{{ url_for('search') }}">Pencarian Produk</a></li>
+          </ul>
+        </div>
+        <div class="col-span-2 md:col-span-4 lg:col-span-1">
+          <h4 class="font-bold text-xs uppercase tracking-widest mb-6">Newsletter</h4>
+          <p class="text-xs text-slate-500 mb-4">Dapatkan info rilis terbatas dan diskon khusus anggota Hypeware.</p>
+          <form class="flex" onsubmit="event.preventDefault(); alert('Terima kasih telah berlangganan!');">
+            <input type="email" placeholder="Email Anda" class="w-full bg-white dark:bg-stone-900 border border-slate-300 dark:border-stone-700 px-3 py-2 text-xs focus:outline-none focus:border-primary text-black dark:text-white" required>
+            <button type="submit" class="bg-primary text-white px-4 text-xs font-bold hover:bg-black transition">DAFTAR</button>
+          </form>
+        </div>
+      </div>
+      <div class="border-t border-slate-200 dark:border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-[11px] text-slate-400 uppercase tracking-widest">© 2026 HYPEWARE. Seluruh Hak Cipta Dilindungi.</p>
+        <span class="text-[11px] text-slate-400 uppercase tracking-widest flex items-center gap-1">
+          <span class="material-icons-outlined text-xs">language</span> Indonesia
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Scripts -->
+  <script type="module" src="{{ url_for('static', filename='js/cart.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/nav.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

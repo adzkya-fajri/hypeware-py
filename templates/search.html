@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}Pencarian Produk | HYPEWARE{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 lg:px-8 py-10">
+  <!-- Search Input Header -->
+  <div class="max-w-2xl mx-auto text-center mb-12">
+    <span class="text-primary font-bold text-xs uppercase tracking-widest bg-primary/10 px-3 py-1 inline-block mb-3">
+      Fitur Pencarian
+    </span>
+    <h1 class="text-3xl md:text-4xl font-display font-bold uppercase tracking-tight mb-6">
+      Temukan Produk Pilihan Anda
+    </h1>
+    
+    <form action="{{ url_for('search') }}" method="GET" class="relative flex items-center">
+      <input 
+        type="text" 
+        name="q" 
+        value="{{ query }}" 
+        placeholder="Cari kaos, kemeja, celana, dress..." 
+        class="w-full bg-stone-50 dark:bg-stone-900 border-2 border-stone-300 dark:border-stone-700 focus:border-primary px-5 py-3.5 pr-28 text-sm focus:outline-none text-black dark:text-white"
+        required
+      >
+      <button type="submit" class="absolute right-1.5 bg-primary text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 hover:bg-black transition">
+        CARI
+      </button>
+    </form>
+
+    <!-- Quick Search Tags -->
+    <div class="flex flex-wrap justify-center items-center gap-2 mt-4 text-xs text-stone-500">
+      <span>Kata Kunci Populer:</span>
+      <a href="{{ url_for('search') }}?q=kaos" class="underline hover:text-primary">Kaos</a>
+      <span>•</span>
+      <a href="{{ url_for('search') }}?q=kemeja" class="underline hover:text-primary">Kemeja</a>
+      <span>•</span>
+      <a href="{{ url_for('search') }}?q=flanel" class="underline hover:text-primary">Flanel</a>
+      <span>•</span>
+      <a href="{{ url_for('search') }}?q=dress" class="underline hover:text-primary">Dress</a>
+      <span>•</span>
+      <a href="{{ url_for('search') }}?q=celana" class="underline hover:text-primary">Celana</a>
+    </div>
+  </div>
+
+  <!-- Results Section -->
+  {% if query %}
+  <div class="mb-6 flex justify-between items-center border-b border-stone-200 dark:border-stone-800 pb-4">
+    <h2 class="text-lg font-display font-bold uppercase tracking-wide">
+      Hasil Pencarian: <span class="text-primary">"{{ query }}"</span>
+    </h2>
+    <span class="text-xs text-stone-500 font-medium">{{ total }} Produk Ditemukan</span>
+  </div>
+
+  {% if results %}
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    {% for product in results %}
+    <div class="product-card group relative bg-white dark:bg-stone-900 border border-stone-100 dark:border-stone-800 flex flex-col justify-between">
+      <div class="relative aspect-square overflow-hidden bg-stone-100 dark:bg-stone-800">
+        <a href="{{ url_for('product_detail', product_id=product.id) }}">
+          <img src="{{ product.img }}" alt="{{ product.nama }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        </a>
+        <button 
+          class="quick-add absolute bottom-3 right-3 bg-black text-white dark:bg-white dark:text-black p-2 rounded-full opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-primary dark:hover:bg-primary hover:text-white"
+          onclick="window.HypewareCart.addToCart({id: '{{ product.id }}', nama: '{{ product.nama }}', harga: '{{ product.harga }}', priceNumeric: {{ product.priceNumeric }}, img: '{{ product.img }}', category: '{{ product.category }}', gender: '{{ product.gender }}'})"
+          title="Tambah ke Keranjang">
+          <span class="material-icons-outlined text-sm">shopping_bag</span>
+        </button>
+      </div>
+
+      <div class="p-4 flex flex-col justify-between flex-grow">
+        <div>
+          <span class="text-[10px] text-stone-400 uppercase tracking-widest">{{ product.categoryName }} ({{ product.gender|capitalize }})</span>
+          <h3 class="font-bold text-xs uppercase line-clamp-2 mt-1 mb-2 hover:text-primary transition">
+            <a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.nama }}</a>
+          </h3>
+        </div>
+        <div class="flex justify-between items-center mt-3 pt-2 border-t border-stone-100 dark:border-stone-800">
+          <span class="text-primary font-bold text-sm">{{ product.harga }}</span>
+          <span class="text-[10px] text-stone-400">Ready Stock</span>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-16 bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-8">
+    <span class="material-icons-outlined text-6xl text-stone-300 dark:text-stone-700 mb-3">search_off</span>
+    <h3 class="text-xl font-display font-bold uppercase mb-2">Tidak Ditemukan</h3>
+    <p class="text-stone-500 text-xs max-w-sm mx-auto mb-6">
+      Tidak ada produk yang cocok dengan kata kunci "{{ query }}". Silakan coba kata kunci lain atau lihat kategori kami.
+    </p>
+    <a href="{{ url_for('collection', gender='pria') }}" class="bg-primary text-white text-xs font-bold uppercase tracking-widest px-6 py-3 inline-block hover:bg-black transition">
+      Lihat Semua Koleksi
+    </a>
+  </div>
+  {% endif %}
+
+  {% else %}
+  <!-- Browse by Gender Grid when no search has been done -->
+  <div class="mt-8">
+    <h3 class="text-center font-display text-xl uppercase tracking-wider mb-6">Atau Jelajahi Berdasarkan Kategori</h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <a href="{{ url_for('collection', gender='pria') }}" class="group p-6 bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-center hover:border-primary transition">
+        <span class="material-icons-outlined text-4xl text-primary group-hover:scale-110 transition-transform">man</span>
+        <h4 class="font-display font-bold text-lg uppercase mt-2">Koleksi Pria</h4>
+        <p class="text-[11px] text-stone-500 mt-1">Kaos, Kemeja, Celana, Jaket</p>
+      </a>
+      <a href="{{ url_for('collection', gender='wanita') }}" class="group p-6 bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-center hover:border-primary transition">
+        <span class="material-icons-outlined text-4xl text-primary group-hover:scale-110 transition-transform">woman</span>
+        <h4 class="font-display font-bold text-lg uppercase mt-2">Koleksi Wanita</h4>
+        <p class="text-[11px] text-stone-500 mt-1">Dress, Blouse, Rok, Outerwear</p>
+      </a>
+      <a href="{{ url_for('collection', gender='anak') }}" class="group p-6 bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-center hover:border-primary transition">
+        <span class="material-icons-outlined text-4xl text-primary group-hover:scale-110 transition-transform">child_care</span>
+        <h4 class="font-display font-bold text-lg uppercase mt-2">Koleksi Anak</h4>
+        <p class="text-[11px] text-stone-500 mt-1">Setelan, Kaos Grafis, Celana</p>
+      </a>
+      <a href="{{ url_for('collection', gender='bayi') }}" class="group p-6 bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-center hover:border-primary transition">
+        <span class="material-icons-outlined text-4xl text-primary group-hover:scale-110 transition-transform">baby_changing_station</span>
+        <h4 class="font-display font-bold text-lg uppercase mt-2">Koleksi Bayi</h4>
+        <p class="text-[11px] text-stone-500 mt-1">Bodysuit, Romper Katun Lembut</p>
+      </a>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

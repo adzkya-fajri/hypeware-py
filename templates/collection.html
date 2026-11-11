@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}
+Koleksi {{ gender|capitalize }} | HYPEWARE Modern Fashion
+{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 lg:px-8 py-8">
+  <!-- Breadcrumbs -->
+  <nav class="flex text-xs text-gray-500 mb-6 gap-2 uppercase tracking-wider">
+    <a href="{{ url_for('index') }}" class="hover:text-primary transition">Hypeware</a> 
+    <span>/</span>
+    <span>Koleksi</span>
+    <span>/</span>
+    <span class="text-black dark:text-white font-bold">{{ gender|capitalize }}</span>
+  </nav>
+
+  <!-- Banner Koleksi -->
+  <div class="relative bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-8 md:p-12 mb-10 overflow-hidden">
+    <div class="max-w-xl relative z-10">
+      <span class="text-primary font-bold text-xs uppercase tracking-widest bg-primary/10 dark:bg-primary/20 px-3 py-1 inline-block mb-3">
+        Katalog Resmi
+      </span>
+      <h1 class="text-3xl md:text-5xl font-display font-bold uppercase tracking-tight mb-3">
+        Koleksi {{ gender|capitalize }}
+      </h1>
+      <p class="text-stone-600 dark:text-stone-400 text-xs md:text-sm leading-relaxed">
+        Temukan busana streetwear, casual, dan formal berkualitas tinggi yang dirancang dengan material terbaik untuk kenyamanan maksimal.
+      </p>
+    </div>
+    <div class="absolute right-0 top-0 bottom-0 w-1/3 opacity-20 pointer-events-none hidden md:block">
+      {% if gender == 'pria' %}
+      <img src="{{ url_for('static', filename='asset/cowok/gambar_pria.jpg') }}" class="w-full h-full object-cover">
+      {% elif gender == 'wanita' %}
+      <img src="{{ url_for('static', filename='asset/cewek/gambar_wanita.jpg') }}" class="w-full h-full object-cover">
+      {% elif gender == 'anak' %}
+      <img src="{{ url_for('static', filename='asset/anak/gambar_anak.jpg') }}" class="w-full h-full object-cover">
+      {% else %}
+      <img src="{{ url_for('static', filename='asset/anak/kaos_anak.jpg') }}" class="w-full h-full object-cover">
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Filter & Sort Bar -->
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4 border-b border-gray-200 dark:border-gray-800 pb-4">
+    <!-- Category Filter Pills -->
+    <div class="flex flex-wrap gap-4 md:gap-6">
+      <button data-filter="all" class="filter-btn {% if active_cat == 'all' %}active border-b-2 border-black dark:border-white text-black dark:text-white{% else %}text-gray-400{% endif %} font-bold text-xs uppercase tracking-widest pb-1 transition">
+        Semua
+      </button>
+      {% if gender == 'pria' %}
+      <button data-filter="bjp" class="filter-btn {% if active_cat == 'bjp' %}active border-b-2 border-black dark:border-white text-black dark:text-white{% else %}text-gray-400{% endif %} font-bold text-xs uppercase tracking-widest pb-1 hover:text-black dark:hover:text-white transition">Kaos</button>
+      <button data-filter="km" class="filter-btn {% if active_cat == 'km' %}active border-b-2 border-black dark:border-white text-black dark:text-white{% else %}text-gray-400{% endif %} font-bold text-xs uppercase tracking-widest pb-1 hover:text-black dark:hover:text-white transition">Kemeja</button>
+      <button data-filter="cl" class="filter-btn {% if active_cat == 'cl' %}active border-b-2 border-black dark:border-white text-black dark:text-white{% else %}text-gray-400{% endif %} font-bold text-xs uppercase tracking-widest pb-1 hover:text-black dark:hover:text-white transition">Celana</button>
+      <button data-filter="op" class="filter-btn {% if active_cat == 'op' %}active border-b-2 border-black dark:border-white text-black dark:text-white{% else %}text-gray-400{% endif %} font-bold text-xs uppercase tracking-widest pb-1 hover:text-black dark:hover:text-white transition">Outerwear</button>
+      {% elif gender == 'wanita' %}
+      <button data-filter="bj" class="filter-btn {% if active_cat == 'bj' %}active border-b-2 border-black dark:border-white text-black dark:text-white{% else %}text-gray-400{% endif %} font-bold text-xs uppercase tracking-widest pb-1 hover:text-black dark:hover:text-white transition">Kaos</button>
+      <button data-filter="dr" class="filter-btn {% if active_cat == 'dr' %}active border-b-2 border-black dark:border-white text-black dark:text-white{% else %}text-gray-400{% endif %} font-bold text-xs uppercase tracking-widest pb-1 hover:text-black dark:hover:text-white transition">Dress</button>
+      <button data-filter="ro" class="filter-btn {% if active_cat == 'ro' %}active border-b-2 border-black dark:border-white text-black dark:text-white{% else %}text-gray-400{% endif %} font-bold text-xs uppercase tracking-widest pb-1 hover:text-black dark:hover:text-white transition">Rok</button>
+      <button data-filter="cl" class="filter-btn {% if active_cat == 'cl' %}active border-b-2 border-black dark:border-white text-black dark:text-white{% else %}text-gray-400{% endif %} font-bold text-xs uppercase tracking-widest pb-1 hover:text-black dark:hover:text-white transition">Celana</button>
+      <button data-filter="op" class="filter-btn {% if active_cat == 'op' %}active border-b-2 border-black dark:border-white text-black dark:text-white{% else %}text-gray-400{% endif %} font-bold text-xs uppercase tracking-widest pb-1 hover:text-black dark:hover:text-white transition">Outerwear</button>
+      {% elif gender == 'anak' %}
+      <button data-filter="bjp" class="filter-btn {% if active_cat == 'bjp' %}active border-b-2 border-black dark:border-white text-black dark:text-white{% else %}text-gray-400{% endif %} font-bold text-xs uppercase tracking-widest pb-1 hover:text-black dark:hover:text-white transition">Kaos</button>
+      <button data-filter="km" class="filter-btn {% if active_cat == 'km' %}active border-b-2 border-black dark:border-white text-black dark:text-white{% else %}text-gray-400{% endif %} font-bold text-xs uppercase tracking-widest pb-1 hover:text-black dark:hover:text-white transition">Kemeja</button>
+      <button data-filter="cl" class="filter-btn {% if active_cat == 'cl' %}active border-b-2 border-black dark:border-white text-black dark:text-white{% else %}text-gray-400{% endif %} font-bold text-xs uppercase tracking-widest pb-1 hover:text-black dark:hover:text-white transition">Celana</button>
+      <button data-filter="op" class="filter-btn {% if active_cat == 'op' %}active border-b-2 border-black dark:border-white text-black dark:text-white{% else %}text-gray-400{% endif %} font-bold text-xs uppercase tracking-widest pb-1 hover:text-black dark:hover:text-white transition">Outerwear</button>
+      {% else %}
+      <button data-filter="bjp" class="filter-btn {% if active_cat == 'bjp' %}active border-b-2 border-black dark:border-white text-black dark:text-white{% else %}text-gray-400{% endif %} font-bold text-xs uppercase tracking-widest pb-1 hover:text-black dark:hover:text-white transition">Kaos</button>
+      <button data-filter="cl" class="filter-btn {% if active_cat == 'cl' %}active border-b-2 border-black dark:border-white text-black dark:text-white{% else %}text-gray-400{% endif %} font-bold text-xs uppercase tracking-widest pb-1 hover:text-black dark:hover:text-white transition">Celana</button>
+      <button data-filter="op" class="filter-btn {% if active_cat == 'op' %}active border-b-2 border-black dark:border-white text-black dark:text-white{% else %}text-gray-400{% endif %} font-bold text-xs uppercase tracking-widest pb-1 hover:text-black dark:hover:text-white transition">Outerwear</button>
+      {% endif %}
+    </div>
+
+    <!-- Product Count & Sort -->
+    <div class="flex items-center gap-4 text-xs">
+      <span id="product-count" class="text-gray-500 font-medium">{{ products|length }} Produk</span>
+      <select id="sort-select" class="bg-transparent border border-gray-200 dark:border-gray-800 px-3 py-1.5 uppercase font-bold text-[11px] focus:outline-none focus:border-primary text-black dark:text-white cursor-pointer">
+        <option value="default" class="bg-white dark:bg-stone-900">Urutkan: Rekomendasi</option>
+        <option value="price-low" class="bg-white dark:bg-stone-900">Harga: Rendah ke Tinggi</option>
+        <option value="price-high" class="bg-white dark:bg-stone-900">Harga: Tinggi ke Rendah</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Product Grid -->
+  <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    {% for product in products %}
+    <div 
+      class="product-card group relative bg-white dark:bg-stone-900 border border-stone-100 dark:border-stone-800 flex flex-col justify-between"
+      data-category="{{ product.category }}"
+      data-price="{{ product.priceNumeric }}"
+      {% if active_cat != 'all' and product.category != active_cat %}style="display: none;"{% endif %}
+    >
+      <div class="relative aspect-square overflow-hidden bg-stone-100 dark:bg-stone-800">
+        <a href="{{ url_for('product_detail', product_id=product.id) }}">
+          <img src="{{ product.img }}" alt="{{ product.nama }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        </a>
+        <button 
+          class="quick-add-btn quick-add absolute bottom-3 right-3 bg-black text-white dark:bg-white dark:text-black p-2 rounded-full opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-primary dark:hover:bg-primary hover:text-white"
+          data-id="{{ product.id }}"
+          data-nama="{{ product.nama }}"
+          data-harga="{{ product.harga }}"
+          data-price="{{ product.priceNumeric }}"
+          data-img="{{ product.img }}"
+          data-category="{{ product.category }}"
+          title="Tambah ke Keranjang">
+          <span class="material-icons-outlined text-sm">shopping_bag</span>
+        </button>
+      </div>
+
+      <div class="p-4 flex flex-col justify-between flex-grow">
+        <div>
+          <span class="text-[10px] text-stone-400 uppercase tracking-widest">{{ product.categoryName }}</span>
+          <h3 class="font-bold text-xs uppercase line-clamp-2 mt-1 mb-2 hover:text-primary transition">
+            <a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.nama }}</a>
+          </h3>
+        </div>
+        <div class="flex justify-between items-center mt-3 pt-2 border-t border-stone-100 dark:border-stone-800">
+          <span class="text-primary font-bold text-sm">{{ product.harga }}</span>
+          <span class="text-[10px] text-stone-400">Ready Stock</span>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/collection.js') }}"></script>
+{% endblock %}

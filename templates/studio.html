@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+
+{% block title %}HYPEWARE STUDIO | Kustomisasi Desain Baju{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 lg:px-8 py-8">
+  <!-- Breadcrumb -->
+  <nav class="flex text-xs text-gray-500 mb-6 gap-2 uppercase tracking-wider">
+    <a href="{{ url_for('index') }}" class="hover:text-primary transition">Hypeware</a> 
+    <span>/</span>
+    <span class="text-black dark:text-white font-bold">Studio Kustomisasi</span>
+  </nav>
+
+  <!-- Studio Header -->
+  <div class="mb-8 border-b border-stone-200 dark:border-stone-800 pb-4 flex flex-col md:flex-row justify-between md:items-end gap-4">
+    <div>
+      <span class="text-primary font-bold text-xs uppercase tracking-widest bg-primary/10 px-3 py-1 inline-block mb-2">
+        Interactive Customizer
+      </span>
+      <h1 class="text-3xl md:text-4xl font-display font-bold uppercase tracking-tight">
+        HYPEWARE DESIGN STUDIO
+      </h1>
+      <p class="text-stone-500 text-xs mt-1">Rancang kaos streetwear impian Anda dengan teks, warna, dan material distro pilihan.</p>
+    </div>
+    <div class="text-right">
+      <span class="text-xs text-stone-400 block uppercase">Harga Kaos Custom:</span>
+      <span class="text-2xl font-display font-bold text-primary">Rp85.000</span>
+    </div>
+  </div>
+
+  <!-- Studio Work Area -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <!-- Left: Interactive Canvas Preview -->
+    <div class="lg:col-span-7 bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-8 flex flex-col items-center justify-center min-h-[480px] relative overflow-hidden">
+      <!-- Live Mockup Container -->
+      <div id="mockup-container" class="relative w-full max-w-md aspect-square flex items-center justify-center">
+        <!-- SVG T-Shirt with Dynamic Fill -->
+        <svg
+          viewBox="0 0 100 100"
+          class="absolute inset-0 w-full h-full drop-shadow-2xl transition-colors duration-500"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <linearGradient id="teeFill" x1="0" y1="0" x2="0" y2="1">
+              <stop id="grad-stop-1" offset="0" stop-color="#ffffff" stop-opacity="0.98" />
+              <stop id="grad-stop-2" offset="0.55" stop-color="#ffffff" stop-opacity="0.96" />
+              <stop id="grad-stop-3" offset="1" stop-color="#ffffff" stop-opacity="0.88" />
+            </linearGradient>
+            <linearGradient id="teeDepth" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#000" stop-opacity="0.15" />
+              <stop offset="0.22" stop-color="#000" stop-opacity="0.05" />
+              <stop offset="0.5" stop-color="#000" stop-opacity="0" />
+              <stop offset="0.78" stop-color="#000" stop-opacity="0.06" />
+              <stop offset="1" stop-color="#000" stop-opacity="0.15" />
+            </linearGradient>
+            <clipPath id="teeClip">
+              <path d="M38 13c2.6 5.4 6.7 7.8 12 7.8s9.4-2.4 12-7.8h10.2c1.8 0 3 1.2 3.6 2.2l5.5 11.8c.6 1.3-.2 2.9-1.6 3.5l-6.2 2.6c-1.2.5-2.6 0-3.3-1.1l-3.2-5.1V83c0 3.3-2.7 6-6 6H39c-3.3 0-6-2.7-6-6V26.9l-3.2 5.1c-.7 1.1-2.1 1.6-3.3 1.1l-6.2-2.6c-1.4-.6-2.2-2.2-1.6-3.5l5.5-11.8c.6-1 1.8-2.2 3.6-2.2H38z" />
+            </clipPath>
+          </defs>
+
+          <!-- Base Fill -->
+          <path
+            d="M38 13c2.6 5.4 6.7 7.8 12 7.8s9.4-2.4 12-7.8h10.2c1.8 0 3 1.2 3.6 2.2l5.5 11.8c.6 1.3-.2 2.9-1.6 3.5l-6.2 2.6c-1.2.5-2.6 0-3.3-1.1l-3.2-5.1V83c0 3.3-2.7 6-6 6H39c-3.3 0-6-2.7-6-6V26.9l-3.2 5.1c-.7 1.1-2.1 1.6-3.3 1.1l-6.2-2.6c-1.4-.6-2.2-2.2-1.6-3.5l5.5-11.8c.6-1 1.8-2.2 3.6-2.2H38z"
+            fill="url(#teeFill)"
+          />
+          <path d="M38 13c2.6 5.4 6.7 7.8 12 7.8s9.4-2.4 12-7.8h10.2c1.8 0 3 1.2 3.6 2.2l5.5 11.8c.6 1.3-.2 2.9-1.6 3.5l-6.2 2.6c-1.2.5-2.6 0-3.3-1.1l-3.2-5.1V83c0 3.3-2.7 6-6 6H39c-3.3 0-6-2.7-6-6V26.9l-3.2 5.1c-.7 1.1-2.1 1.6-3.3 1.1l-6.2-2.6c-1.4-.6-2.2-2.2-1.6-3.5l5.5-11.8c.6-1 1.8-2.2 3.6-2.2H38z" fill="url(#teeDepth)" opacity="0.45" />
+
+          <!-- Outlines & Stitches -->
+          <path
+            d="M38 13c2.6 5.4 6.7 7.8 12 7.8s9.4-2.4 12-7.8h10.2c1.8 0 3 1.2 3.6 2.2l5.5 11.8c.6 1.3-.2 2.9-1.6 3.5l-6.2 2.6c-1.2.5-2.6 0-3.3-1.1l-3.2-5.1V83c0 3.3-2.7 6-6 6H39c-3.3 0-6-2.7-6-6V26.9l-3.2 5.1c-.7 1.1-2.1 1.6-3.3 1.1l-6.2-2.6c-1.4-.6-2.2-2.2-1.6-3.5l5.5-11.8c.6-1 1.8-2.2 3.6-2.2H38z"
+            fill="none"
+            stroke="#2b2f3a"
+            stroke-width="2.6"
+            stroke-linejoin="round"
+            stroke-linecap="round"
+          />
+          <path d="M41.5 15.2c2.8 3.6 5.6 5.4 8.5 5.4s5.7-1.8 8.5-5.4" fill="none" stroke="#9aa3b2" stroke-width="2" stroke-linecap="round" />
+          <path d="M33.5 22.5l9.5 3.2" fill="none" stroke="rgba(43, 47, 58, 0.45)" stroke-width="1.2" stroke-linecap="round" />
+          <path d="M66.5 22.5l-9.5 3.2" fill="none" stroke="rgba(43, 47, 58, 0.45)" stroke-width="1.2" stroke-linecap="round" />
+          <path d="M37 83.5h26" fill="none" stroke="#2b2f3a" stroke-width="2" stroke-linecap="round" />
+        </svg>
+
+        <!-- Printing Area -->
+        <div class="absolute w-[45%] h-[50%] border-2 border-dashed border-primary/40 rounded flex flex-col items-center justify-center p-3 z-10 mt-12">
+          <span class="text-[8px] font-bold text-primary opacity-60 uppercase tracking-widest absolute top-1.5">Printing Area</span>
+          
+          <!-- Live Preview Text -->
+          <div 
+            id="preview-text" 
+            class="text-2xl font-display font-bold uppercase text-center break-words w-full select-none"
+            style="color: #EE0000; font-family: Oswald, sans-serif;"
+          >
+            HYPEWARE
+          </div>
+        </div>
+      </div>
+
+      <span class="text-[11px] text-stone-400 mt-4">Pratinjau interaktif real-time 1:1</span>
+    </div>
+
+    <!-- Right: Studio Controls Panel -->
+    <div class="lg:col-span-5 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-6 space-y-6">
+      <h3 class="font-display font-bold text-base uppercase tracking-wider border-b border-stone-200 dark:border-stone-800 pb-3">
+        Kustomisasi Kaos
+      </h3>
+
+      <!-- 1. Color Picker -->
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider mb-2">1. Warna Dasar Kaos</label>
+        <div class="flex flex-wrap gap-3" id="shirt-colors">
+          <button type="button" class="shirt-color-btn w-9 h-9 rounded-full border-2 border-primary transition shadow" style="background-color: #ffffff" data-color="#ffffff" title="Putih"></button>
+          <button type="button" class="shirt-color-btn w-9 h-9 rounded-full border-2 border-transparent transition shadow" style="background-color: #151c27" data-color="#151c27" title="Hitam"></button>
+          <button type="button" class="shirt-color-btn w-9 h-9 rounded-full border-2 border-transparent transition shadow" style="background-color: #EE0000" data-color="#EE0000" title="Merah"></button>
+          <button type="button" class="shirt-color-btn w-9 h-9 rounded-full border-2 border-transparent transition shadow" style="background-color: #5e5e5e" data-color="#5e5e5e" title="Abu-Abu"></button>
+          <button type="button" class="shirt-color-btn w-9 h-9 rounded-full border-2 border-transparent transition shadow" style="background-color: #0037b0" data-color="#0037b0" title="Biru"></button>
+          <button type="button" class="shirt-color-btn w-9 h-9 rounded-full border-2 border-transparent transition shadow" style="background-color: #166534" data-color="#166534" title="Hijau"></button>
+        </div>
+      </div>
+
+      <!-- 2. Custom Text Input -->
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider mb-2">2. Teks Sablon Kaos</label>
+        <input 
+          type="text" 
+          id="custom-text-input" 
+          value="HYPEWARE" 
+          maxlength="24"
+          placeholder="Ketik teks desain Anda..." 
+          class="w-full bg-stone-50 dark:bg-stone-800 border border-stone-300 dark:border-stone-700 px-4 py-2.5 text-sm font-bold uppercase focus:outline-none focus:border-primary text-black dark:text-white"
+        >
+        <p class="text-[10px] text-stone-400 mt-1">Maksimal 24 karakter huruf atau angka.</p>
+      </div>
+
+      <!-- 3. Font Family & Size -->
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider mb-2">Jenis Huruf</label>
+          <select id="font-select" class="w-full bg-stone-50 dark:bg-stone-800 border border-stone-300 dark:border-stone-700 px-3 py-2 text-xs font-bold uppercase focus:outline-none focus:border-primary text-black dark:text-white cursor-pointer">
+            <option value="Oswald, sans-serif">Oswald (Bold)</option>
+            <option value="Inter, sans-serif">Inter (Clean)</option>
+            <option value="Impact, sans-serif">Impact (Heavy)</option>
+            <option value="'Courier New', monospace">Courier (Monospace)</option>
+            <option value="Georgia, serif">Georgia (Serif)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider mb-2">Warna Teks Sablon</label>
+          <div class="flex gap-2">
+            <button type="button" class="text-color-btn w-8 h-8 rounded border-2 border-primary" style="background-color: #EE0000" data-color="#EE0000"></button>
+            <button type="button" class="text-color-btn w-8 h-8 rounded border-2 border-transparent" style="background-color: #ffffff" data-color="#ffffff"></button>
+            <button type="button" class="text-color-btn w-8 h-8 rounded border-2 border-transparent" style="background-color: #000000" data-color="#000000"></button>
+            <button type="button" class="text-color-btn w-8 h-8 rounded border-2 border-transparent" style="background-color: #fbbf24" data-color="#fbbf24"></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Size Selection -->
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider mb-2">3. Ukuran Kaos</label>
+        <div class="flex gap-2" id="studio-size-picker">
+          {% for s in ['S', 'M', 'L', 'XL', 'XXL'] %}
+          <button type="button" class="studio-size-btn px-4 py-2 border text-xs font-bold transition {% if s == 'L' %}border-black dark:border-white bg-black dark:bg-white text-white dark:text-black{% else %}border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:border-primary{% endif %}" data-size="{{ s }}">
+            {{ s }}
+          </button>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Submit & Add to Cart -->
+      <div class="pt-4 border-t border-stone-200 dark:border-stone-800 space-y-3">
+        <button id="btn-save-custom-cart" class="w-full bg-primary text-white py-4 font-bold text-xs uppercase tracking-widest hover:bg-red-700 transition flex items-center justify-center gap-2">
+          <span class="material-icons-outlined text-sm">shopping_bag</span>
+          Masukkan Kaos Custom ke Keranjang
+        </button>
+        <a href="{{ url_for('cart') }}" class="block text-center text-xs text-stone-500 hover:text-primary transition uppercase font-medium">
+          Lihat Keranjang Belanja →
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  let shirtColor = "#ffffff";
+  let textColor = "#EE0000";
+  let selectedSize = "L";
+
+  const previewText = document.getElementById("preview-text");
+  const customTextInput = document.getElementById("custom-text-input");
+  const fontSelect = document.getElementById("font-select");
+  const gradStop1 = document.getElementById("grad-stop-1");
+  const gradStop2 = document.getElementById("grad-stop-2");
+  const gradStop3 = document.getElementById("grad-stop-3");
+
+  // Update text
+  customTextInput.addEventListener("input", (e) => {
+    previewText.textContent = e.target.value || "HYPEWARE";
+  });
+
+  // Update font
+  fontSelect.addEventListener("change", (e) => {
+    previewText.style.fontFamily = e.target.value;
+  });
+
+  // Shirt colors
+  document.querySelectorAll(".shirt-color-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".shirt-color-btn").forEach(b => b.classList.replace("border-primary", "border-transparent"));
+      btn.classList.replace("border-transparent", "border-primary");
+      shirtColor = btn.getAttribute("data-color");
+      gradStop1.setAttribute("stop-color", shirtColor);
+      gradStop2.setAttribute("stop-color", shirtColor);
+      gradStop3.setAttribute("stop-color", shirtColor);
+    });
+  });
+
+  // Text colors
+  document.querySelectorAll(".text-color-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".text-color-btn").forEach(b => b.classList.replace("border-primary", "border-transparent"));
+      btn.classList.replace("border-transparent", "border-primary");
+      textColor = btn.getAttribute("data-color");
+      previewText.style.color = textColor;
+    });
+  });
+
+  // Size buttons
+  document.querySelectorAll(".studio-size-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".studio-size-btn").forEach(b => {
+        b.className = "studio-size-btn px-4 py-2 border text-xs font-bold transition border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:border-primary";
+      });
+      btn.className = "studio-size-btn px-4 py-2 border text-xs font-bold transition border-black dark:border-white bg-black dark:bg-white text-white dark:text-black";
+      selectedSize = btn.getAttribute("data-size");
+    });
+  });
+
+  // Add custom shirt to cart
+  document.getElementById("btn-save-custom-cart").addEventListener("click", () => {
+    const text = customTextInput.value || "CUSTOM HYPEWARE";
+    const customProduct = {
+      id: "custom-studio-" + Date.now(),
+      nama: `Kaos Custom Studio - "${text}"`,
+      harga: "Rp85.000",
+      priceNumeric: 85000,
+      img: "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTkr5_rj3c1VGSHirJ6bywyh2hlJ9bXsGyoAsO4HtV6Q3w757vJDAMzP3OB54SXSX3rdB4bfLTrfxQ_DYORrnwcU16fLJcieTvra-9jMCS5",
+      category: "custom",
+      gender: "unisex"
+    };
+
+    if (window.HypewareCart) {
+      window.HypewareCart.addToCart(customProduct, selectedSize, 1);
+    }
+  });
+</script>
+{% endblock %}

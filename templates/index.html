@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+
+{% block title %}HYPEWARE | Modern Fashion Store{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative bg-stone-900 text-white min-h-[550px] flex items-center overflow-hidden">
+  <div class="absolute inset-0 z-0">
+    <img 
+      src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2070" 
+      alt="Hero Fashion" 
+      class="w-full h-full object-cover opacity-40 scale-105 animate-pulse duration-1000"
+    >
+    <div class="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent"></div>
+  </div>
+
+  <div class="container mx-auto px-6 md:px-12 relative z-10 py-16">
+    <span class="text-primary font-bold text-xs uppercase tracking-widest bg-white/10 px-3 py-1 inline-block mb-4">
+      Rilisan Koleksi 2026
+    </span>
+    <h1 class="text-4xl sm:text-6xl md:text-7xl font-display font-bold leading-none tracking-tight max-w-2xl mb-6">
+      REDEFINING <br><span class="text-primary">STREETWEAR</span> ESSENTIALS
+    </h1>
+    <p class="text-stone-300 text-sm md:text-base max-w-lg mb-8 leading-relaxed">
+      Kombinasi material katun premium, siluet modern, dan kenyamanan tanpa kompromi untuk aktivitas harian Anda.
+    </p>
+    <div class="flex flex-wrap gap-4">
+      <a href="{{ url_for('collection', gender='pria') }}" class="bg-primary text-white font-bold text-xs uppercase tracking-widest px-8 py-4 hover:bg-white hover:text-black transition duration-300">
+        Koleksi Pria
+      </a>
+      <a href="{{ url_for('collection', gender='wanita') }}" class="bg-white/10 backdrop-blur-md text-white border border-white/20 font-bold text-xs uppercase tracking-widest px-8 py-4 hover:bg-white hover:text-black transition duration-300">
+        Koleksi Wanita
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Category Highlights -->
+<section class="container mx-auto px-6 py-16">
+  <div class="flex justify-between items-end mb-8 border-b border-stone-200 dark:border-stone-800 pb-4">
+    <div>
+      <span class="text-primary text-xs font-bold uppercase tracking-widest">Kategori Utama</span>
+      <h2 class="text-2xl md:text-3xl font-display font-bold uppercase tracking-tight mt-1">Eksplorasi Koleksi</h2>
+    </div>
+    <div class="flex gap-2">
+      <button onclick="document.getElementById('cat-slider').scrollBy({left: -300, behavior: 'smooth'})" class="p-2 border border-stone-300 dark:border-stone-700 hover:border-black dark:hover:border-white transition">
+        <span class="material-icons-outlined text-sm">arrow_back</span>
+      </button>
+      <button onclick="document.getElementById('cat-slider').scrollBy({left: 300, behavior: 'smooth'})" class="p-2 border border-stone-300 dark:border-stone-700 hover:border-black dark:hover:border-white transition">
+        <span class="material-icons-outlined text-sm">arrow_forward</span>
+      </button>
+    </div>
+  </div>
+
+  <div id="cat-slider" class="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory pb-4">
+    <!-- Pria -->
+    <a href="{{ url_for('collection', gender='pria') }}" class="flex-none w-[280px] sm:w-[320px] snap-start group relative aspect-[3/4] overflow-hidden bg-stone-100 dark:bg-stone-900">
+      <img src="{{ url_for('static', filename='asset/cowok/gambar_pria.jpg') }}" alt="Koleksi Pria" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+      <div class="absolute bottom-6 left-6 text-white">
+        <h3 class="text-2xl font-display font-bold uppercase">Koleksi Pria</h3>
+        <p class="text-xs text-stone-300 mt-1 flex items-center gap-1 group-hover:text-primary transition">
+          Jelajahi Produk <span class="material-icons-outlined text-xs">arrow_forward</span>
+        </p>
+      </div>
+    </a>
+
+    <!-- Wanita -->
+    <a href="{{ url_for('collection', gender='wanita') }}" class="flex-none w-[280px] sm:w-[320px] snap-start group relative aspect-[3/4] overflow-hidden bg-stone-100 dark:bg-stone-900">
+      <img src="{{ url_for('static', filename='asset/cewek/gambar_wanita.jpg') }}" alt="Koleksi Wanita" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+      <div class="absolute bottom-6 left-6 text-white">
+        <h3 class="text-2xl font-display font-bold uppercase">Koleksi Wanita</h3>
+        <p class="text-xs text-stone-300 mt-1 flex items-center gap-1 group-hover:text-primary transition">
+          Jelajahi Produk <span class="material-icons-outlined text-xs">arrow_forward</span>
+        </p>
+      </div>
+    </a>
+
+    <!-- Anak -->
+    <a href="{{ url_for('collection', gender='anak') }}" class="flex-none w-[280px] sm:w-[320px] snap-start group relative aspect-[3/4] overflow-hidden bg-stone-100 dark:bg-stone-900">
+      <img src="{{ url_for('static', filename='asset/anak/gambar_anak.jpg') }}" alt="Koleksi Anak" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+      <div class="absolute bottom-6 left-6 text-white">
+        <h3 class="text-2xl font-display font-bold uppercase">Koleksi Anak</h3>
+        <p class="text-xs text-stone-300 mt-1 flex items-center gap-1 group-hover:text-primary transition">
+          Jelajahi Produk <span class="material-icons-outlined text-xs">arrow_forward</span>
+        </p>
+      </div>
+    </a>
+
+    <!-- Bayi -->
+    <a href="{{ url_for('collection', gender='bayi') }}" class="flex-none w-[280px] sm:w-[320px] snap-start group relative aspect-[3/4] overflow-hidden bg-stone-100 dark:bg-stone-900">
+      <img src="https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR6sJ5D_6aZcZtV7l9rYw" alt="Koleksi Bayi" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+      <div class="absolute bottom-6 left-6 text-white">
+        <h3 class="text-2xl font-display font-bold uppercase">Koleksi Bayi</h3>
+        <p class="text-xs text-stone-300 mt-1 flex items-center gap-1 group-hover:text-primary transition">
+          Jelajahi Produk <span class="material-icons-outlined text-xs">arrow_forward</span>
+        </p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- Featured Products Section -->
+<section class="container mx-auto px-6 py-12">
+  <div class="flex justify-between items-end mb-8 border-b border-stone-200 dark:border-stone-800 pb-4">
+    <div>
+      <span class="text-primary text-xs font-bold uppercase tracking-widest">Paling Populer</span>
+      <h2 class="text-2xl md:text-3xl font-display font-bold uppercase tracking-tight mt-1">Produk Unggulan</h2>
+    </div>
+    <a href="{{ url_for('collection', gender='pria') }}" class="text-xs font-bold uppercase tracking-widest hover:text-primary transition flex items-center gap-1">
+      Lihat Semua <span class="material-icons-outlined text-xs">arrow_forward</span>
+    </a>
+  </div>
+
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    {% for product in featured_products %}
+    <div class="product-card group relative bg-white dark:bg-stone-900 border border-stone-100 dark:border-stone-800 flex flex-col justify-between">
+      <div class="relative aspect-square overflow-hidden bg-stone-100 dark:bg-stone-800">
+        <a href="{{ url_for('product_detail', product_id=product.id) }}">
+          <img src="{{ product.img }}" alt="{{ product.nama }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        </a>
+        <button 
+          class="quick-add absolute bottom-3 right-3 bg-black text-white dark:bg-white dark:text-black p-2 rounded-full opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-primary dark:hover:bg-primary hover:text-white"
+          onclick="window.HypewareCart.addToCart({id: '{{ product.id }}', nama: '{{ product.nama }}', harga: '{{ product.harga }}', priceNumeric: {{ product.priceNumeric }}, img: '{{ product.img }}', category: '{{ product.category }}', gender: '{{ product.gender }}'})"
+          title="Tambah ke Keranjang">
+          <span class="material-icons-outlined text-sm">shopping_bag</span>
+        </button>
+      </div>
+      <div class="p-4 flex flex-col justify-between flex-grow">
+        <div>
+          <span class="text-[10px] text-stone-400 uppercase tracking-widest">{{ product.categoryName }} ({{ product.gender }})</span>
+          <h4 class="font-bold text-xs uppercase line-clamp-2 mt-1 mb-2 hover:text-primary transition">
+            <a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.nama }}</a>
+          </h4>
+        </div>
+        <div class="flex justify-between items-center mt-3 pt-2 border-t border-stone-100 dark:border-stone-800">
+          <span class="text-primary font-bold text-sm">{{ product.harga }}</span>
+          <span class="text-[10px] text-stone-400">Ready Stock</span>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Studio Banner -->
+<section class="container mx-auto px-6 py-12">
+  <div class="relative bg-black text-white p-8 md:p-14 overflow-hidden border border-stone-800">
+    <div class="relative z-10 max-w-xl">
+      <span class="text-primary text-xs uppercase font-bold tracking-widest bg-primary/20 px-3 py-1 inline-block mb-3">
+        Kustomisasi Interaktif
+      </span>
+      <h2 class="text-3xl md:text-5xl font-display font-bold uppercase leading-tight mb-4">
+        HYPEWARE DESIGN STUDIO
+      </h2>
+      <p class="text-stone-300 text-sm mb-6 leading-relaxed">
+        Ingin kaos dengan desain Anda sendiri? Rancang warna, motif, dan gaya kaos langsung dari browser dan kami cetak dengan kualitas distro premium.
+      </p>
+      <a href="{{ url_for('studio') }}" class="bg-primary text-white font-bold text-xs uppercase tracking-widest px-8 py-4 hover:bg-white hover:text-black transition inline-block">
+        Buka Studio Sekarang
+      </a>
+    </div>
+    <div class="absolute right-0 top-0 bottom-0 w-1/2 opacity-30 md:opacity-50 pointer-events-none hidden sm:block">
+      <img src="{{ url_for('static', filename='asset/cowok/bajucwo1.jpg') }}" alt="Studio" class="w-full h-full object-cover">
+    </div>
+  </div>
+</section>
+
+<!-- Value Props -->
+<section class="container mx-auto px-6 py-12 border-t border-stone-200 dark:border-stone-800">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="flex items-center gap-4 p-6 bg-stone-50 dark:bg-stone-900 border border-stone-100 dark:border-stone-800">
+      <span class="material-icons-outlined text-4xl text-primary">local_shipping</span>
+      <div>
+        <h4 class="font-bold text-sm uppercase">Pengiriman Cepat</h4>
+        <p class="text-xs text-stone-500 mt-1">Kirim ke seluruh kota dengan jaminan tepat waktu.</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-4 p-6 bg-stone-50 dark:bg-stone-900 border border-stone-100 dark:border-stone-800">
+      <span class="material-icons-outlined text-4xl text-primary">verified</span>
+      <div>
+        <h4 class="font-bold text-sm uppercase">100% Produk Original</h4>
+        <p class="text-xs text-stone-500 mt-1">Material katun combed terbaik standar brand ternama.</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-4 p-6 bg-stone-50 dark:bg-stone-900 border border-stone-100 dark:border-stone-800">
+      <span class="material-icons-outlined text-4xl text-primary">autorenew</span>
+      <div>
+        <h4 class="font-bold text-sm uppercase">Garansi Pengembalian</h4>
+        <p class="text-xs text-stone-500 mt-1">Tukar ukuran bebas repot dalam 30 hari.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

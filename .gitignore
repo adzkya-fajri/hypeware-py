@@ -1,0 +1,14 @@
+node_modules
+.env
+.env.local
+.env.*.local
+dist
+*.log
+
+# Python & Pytest
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+.superpowers/

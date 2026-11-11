@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Cart Functionality</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-8">
+    <h1 class="text-2xl font-bold mb-4">Test Cart Functionality</h1>
+    
+    <div class="space-y-4">
+        <h2 class="text-lg font-semibold">Add Products to Cart:</h2>
+        <div class="grid grid-cols-2 gap-4">
+            <button onclick="addTestProduct('estar')" class="bg-blue-500 text-white p-3 rounded">
+                Add ESTAR Kaos (Rp19.000)
+            </button>
+            <button onclick="addTestProduct('fuck')" class="bg-blue-500 text-white p-3 rounded">
+                Add Kaos Dewasa (Rp28.000)
+            </button>
+            <button onclick="addTestProduct('polos')" class="bg-blue-500 text-white p-3 rounded">
+                Add Kaos Polos (Rp75.000)
+            </button>
+            <button onclick="addTestProduct('kaos-crew')" class="bg-blue-500 text-white p-3 rounded">
+                Add T-Shirt Crew Neck (Rp199.000)
+            </button>
+        </div>
+        
+        <div class="mt-6">
+            <a href="keranjang.html" class="bg-green-500 text-white px-6 py-3 rounded inline-block">
+                Go to Cart Page
+            </a>
+        </div>
+        
+        <div class="mt-4">
+            <h3 class="font-semibold">Current Cart Status:</h3>
+            <div id="cart-status" class="bg-gray-100 p-4 rounded mt-2">
+                Loading...
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { dataPria } from './colectiondata/colection_pria.js';
+        import { dataWanita } from './colectiondata/colection_wanita.js';
+        
+        // Wait for produk.js to load
+        function waitForCart() {
+            if (window.hypewareProducts && window.hypewareProducts.cart) {
+                updateCartStatus();
+                return;
+            }
+            setTimeout(waitForCart, 100);
+        }
+        
+        function updateCartStatus() {
+            const cart = window.hypewareProducts.cart;
+            const status = document.getElementById('cart-status');
+            
+            if (cart.items.length === 0) {
+                status.innerHTML = 'Cart is empty';
+            } else {
+                status.innerHTML = `
+                    <p><strong>Items in cart: ${cart.getTotalItems()}</strong></p>
+                    <p><strong>Total: Rp${cart.getTotal().toLocaleString('id-ID')}</strong></p>
+                    <ul class="mt-2">
+                        ${cart.items.map(item => `
+                            <li>• ${item.nama} - ${item.quantity}x ${item.harga}</li>
+                        `).join('')}
+                    </ul>
+                `;
+            }
+        }
+        
+        window.addTestProduct = function(productId) {
+            if (!window.hypewareProducts || !window.hypewareProducts.cart) {
+                alert('Cart system not ready yet!');
+                return;
+            }
+            
+            const success = window.hypewareProducts.cart.addItem(productId, 1, 'M', 'Hitam');
+            if (success) {
+                alert('Product added to cart!');
+                updateCartStatus();
+            } else {
+                alert('Failed to add product to cart!');
+            }
+        };
+        
+        // Load produk.js
+        const script = document.createElement('script');
+        script.type = 'module';
+        script.src = './produk.js';
+        document.head.appendChild(script);
+        
+        // Start checking for cart
+        waitForCart();
+    </script>
+</body>
+</html>

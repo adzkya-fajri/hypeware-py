@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Product Links</title>
+</head>
+<body>
+    <h1>Test Product Links</h1>
+    <p>Click these links to test product detail page:</p>
+    <ul>
+        <li><a href="desc.item.html?id=estar" target="_blank">Test Product: ESTAR (URL param)</a></li>
+        <li><a href="desc.item.html" onclick="localStorage.setItem('selectedProductId', 'estar'); return true;" target="_blank">Test Product: ESTAR (localStorage)</a></li>
+        <li><a href="desc.item.html?id=fuck" target="_blank">Test Product: Kaos Dewasa (URL param)</a></li>
+        <li><a href="desc.item.html?id=polos" target="_blank">Test Product: Kaos Polos (URL param)</a></li>
+    </ul>
+    
+    <h2>Available Product IDs:</h2>
+    <div id="product-list"></div>
+    
+    <script type="module">
+        import { dataPria } from './colectiondata/colection_pria.js';
+        import { dataWanita } from './colectiondata/colection_wanita.js';
+        
+        const allProducts = [...dataPria, ...dataWanita];
+        const productList = document.getElementById('product-list');
+        
+        productList.innerHTML = '<ul>' + allProducts.map(p => 
+            `<li><strong>${p.id}</strong>: ${p.nama} - <a href="desc.item.html?id=${p.id}" target="_blank">Test</a></li>`
+        ).join('') + '</ul>';
+    </script>
+</body>
+</html>

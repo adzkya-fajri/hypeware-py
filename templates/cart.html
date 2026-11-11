@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+
+{% block title %}Keranjang Belanja | HYPEWARE{% endblock %}
+
+{% block content %}
+<main class="container mx-auto px-6 py-8">
+  <div class="max-w-6xl mx-auto">
+    <!-- Page Title -->
+    <div class="mb-8 border-b border-stone-200 dark:border-stone-800 pb-4">
+      <h1 class="text-3xl font-display font-bold uppercase tracking-tight mb-1">Keranjang Belanja</h1>
+      <p class="text-stone-500 text-xs uppercase tracking-wider">Periksa kembali pilihan busana Anda sebelum checkout</p>
+    </div>
+
+    <!-- Free Shipping Progress -->
+    <div class="bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-4 mb-8">
+      <div class="flex justify-between items-center text-xs mb-2">
+        <span id="shipping-progress-text" class="font-medium text-stone-600 dark:text-stone-300">
+          Tambah belanjaan untuk menikmati Gratis Ongkir
+        </span>
+        <span id="shipping-badge" class="font-bold text-primary">Target: Rp699.000</span>
+      </div>
+      <div class="w-full bg-stone-200 dark:bg-stone-800 h-2 rounded-none overflow-hidden">
+        <div id="shipping-progress-bar" class="bg-primary h-full transition-all duration-500" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Cart Items Section -->
+      <div class="lg:col-span-2">
+        <div id="cart-items-container" class="space-y-4">
+          <!-- Dynamically populated by JS -->
+        </div>
+
+        <!-- Empty Cart State -->
+        <div id="empty-cart-state" class="hidden text-center py-16 bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-8">
+          <span class="material-icons-outlined text-6xl text-stone-300 dark:text-stone-700 mb-4">shopping_bag</span>
+          <h3 class="text-xl font-display font-bold uppercase mb-2">Keranjang Anda Kosong</h3>
+          <p class="text-stone-500 text-xs max-w-sm mx-auto mb-6">
+            Belum ada produk yang Anda pilih. Kunjungi koleksi kami untuk menemukan pakaian favorit Anda.
+          </p>
+          <a href="{{ url_for('collection', gender='pria') }}" class="bg-primary text-white font-bold text-xs uppercase tracking-widest px-8 py-3.5 hover:bg-black transition inline-block">
+            Mulai Belanja
+          </a>
+        </div>
+      </div>
+
+      <!-- Order Summary Section -->
+      <div class="lg:col-span-1">
+        <div class="bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-6 sticky top-28">
+          <h2 class="text-lg font-display font-bold uppercase tracking-wider mb-6 border-b border-stone-200 dark:border-stone-800 pb-3">
+            Ringkasan Pesanan
+          </h2>
+
+          <div class="space-y-3 text-xs mb-6 text-stone-600 dark:text-stone-400">
+            <div class="flex justify-between">
+              <span>Subtotal Produk</span>
+              <span id="summary-subtotal" class="font-bold text-black dark:text-white">Rp0</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Estimasi Ongkos Kirim</span>
+              <span id="summary-shipping" class="font-bold text-black dark:text-white">Rp0</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Diskon Promosi</span>
+              <span id="summary-discount" class="font-bold text-emerald-600 dark:text-emerald-400">Rp0</span>
+            </div>
+          </div>
+
+          <div class="border-t border-stone-200 dark:border-stone-800 pt-4 mb-6">
+            <div class="flex justify-between items-baseline">
+              <span class="font-bold text-sm uppercase">Total Tagihan</span>
+              <span id="summary-total" class="text-2xl font-bold text-primary font-display">Rp0</span>
+            </div>
+            <p class="text-[10px] text-stone-400 mt-1">Termasuk PPN jika berlaku.</p>
+          </div>
+
+          <!-- Checkout Button -->
+          <button id="btn-checkout" class="w-full bg-primary text-white py-4 font-bold text-xs uppercase tracking-widest hover:bg-red-700 transition flex items-center justify-center gap-2">
+            <span>Lanjut ke Pembayaran</span>
+            <span class="material-icons-outlined text-sm">arrow_forward</span>
+          </button>
+
+          <!-- Back to Shopping -->
+          <a href="{{ url_for('index') }}" class="block text-center text-xs text-stone-500 hover:text-primary transition mt-4 font-medium uppercase tracking-wider">
+            ← Lanjutkan Berbelanja
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  function formatRupiah(num) {
+    return "Rp" + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
+  function renderCartPage() {
+    const items = window.HypewareCart ? window.HypewareCart.loadCart() : [];
+    const container = document.getElementById("cart-items-container");
+    const emptyState = document.getElementById("empty-cart-state");
+
+    if (!items || items.length === 0) {
+      container.innerHTML = "";
+      emptyState.classList.remove("hidden");
+      document.getElementById("summary-subtotal").textContent = "Rp0";
+      document.getElementById("summary-shipping").textContent = "Rp0";
+      document.getElementById("summary-total").textContent = "Rp0";
+      document.getElementById("shipping-progress-bar").style.width = "0%";
+      document.getElementById("shipping-progress-text").textContent = "Keranjang Anda kosong.";
+      return;
+    }
+
+    emptyState.classList.add("hidden");
+
+    let subtotal = 0;
+    container.innerHTML = items.map(item => {
+      const itemSubtotal = (item.priceNumeric || 0) * (item.quantity || 1);
+      subtotal += itemSubtotal;
+
+      return `
+        <div class="flex gap-4 p-4 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 relative group">
+          <div class="w-20 h-20 sm:w-24 sm:h-24 bg-stone-100 dark:bg-stone-800 flex-shrink-0 overflow-hidden">
+            <img src="${item.img}" alt="${item.nama}" class="w-full h-full object-cover">
+          </div>
+
+          <div class="flex-grow flex flex-col justify-between">
+            <div class="flex justify-between items-start pr-8">
+              <div>
+                <span class="text-[10px] text-stone-400 uppercase tracking-widest">Ukuran: ${item.size || 'M'}</span>
+                <h4 class="font-bold text-xs uppercase mt-0.5 line-clamp-1">${item.nama}</h4>
+              </div>
+              <span class="font-bold text-sm text-primary">${formatRupiah(itemSubtotal)}</span>
+            </div>
+
+            <div class="flex justify-between items-center mt-3">
+              <!-- Qty controls -->
+              <div class="flex items-center border border-stone-200 dark:border-stone-700">
+                <button onclick="window.HypewareCart.updateQuantity('${item.id}', -1); renderCartPage();" class="w-7 h-7 flex items-center justify-center hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-500">
+                  <span class="material-icons-outlined text-xs">remove</span>
+                </button>
+                <span class="w-8 text-center text-xs font-bold">${item.quantity || 1}</span>
+                <button onclick="window.HypewareCart.updateQuantity('${item.id}', 1); renderCartPage();" class="w-7 h-7 flex items-center justify-center hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-500">
+                  <span class="material-icons-outlined text-xs">add</span>
+                </button>
+              </div>
+
+              <!-- Delete btn -->
+              <button onclick="window.HypewareCart.removeFromCart('${item.id}'); renderCartPage();" class="text-stone-400 hover:text-primary transition" title="Hapus Produk">
+                <span class="material-icons-outlined text-base">delete_outline</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    // Calculate Shipping
+    const freeShippingThreshold = 699000;
+    const isFreeShipping = subtotal >= freeShippingThreshold;
+    const shippingCost = isFreeShipping ? 0 : 25000;
+    const total = subtotal + shippingCost;
+
+    document.getElementById("summary-subtotal").textContent = formatRupiah(subtotal);
+    document.getElementById("summary-shipping").textContent = isFreeShipping ? "GRATIS" : formatRupiah(shippingCost);
+    document.getElementById("summary-total").textContent = formatRupiah(total);
+
+    // Update free shipping meter
+    const progressBar = document.getElementById("shipping-progress-bar");
+    const progressText = document.getElementById("shipping-progress-text");
+    if (isFreeShipping) {
+      progressBar.style.width = "100%";
+      progressBar.classList.replace("bg-primary", "bg-emerald-500");
+      progressText.innerHTML = "🎉 Selamat! Anda mendapatkan <strong class='text-emerald-500'>Gratis Ongkir</strong>";
+    } else {
+      const percentage = Math.min(100, Math.round((subtotal / freeShippingThreshold) * 100));
+      progressBar.style.width = percentage + "%";
+      progressBar.classList.replace("bg-emerald-500", "bg-primary");
+      const remaining = freeShippingThreshold - subtotal;
+      progressText.innerHTML = `Tambah <strong>${formatRupiah(remaining)}</strong> lagi untuk Gratis Ongkir.`;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    renderCartPage();
+
+    document.getElementById("btn-checkout").addEventListener("click", () => {
+      const items = window.HypewareCart ? window.HypewareCart.loadCart() : [];
+      if (!items || items.length === 0) {
+        alert("Keranjang belanja masih kosong!");
+        return;
+      }
+      alert("Pesanan simulasi berhasil dikonfirmasi!\nTerima kasih telah berbelanja di HYPEWARE.");
+      localStorage.removeItem("hypeware_cart");
+      if (window.HypewareCart) window.HypewareCart.updateCartBadge();
+      renderCartPage();
+    });
+  });
+</script>
+{% endblock %}

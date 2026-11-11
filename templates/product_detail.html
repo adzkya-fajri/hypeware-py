@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ product.nama }} | HYPEWARE
+{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 lg:px-8 py-8">
+  <!-- Breadcrumb -->
+  <nav class="flex text-xs text-gray-500 mb-8 gap-2 uppercase tracking-wider">
+    <a href="{{ url_for('index') }}" class="hover:text-primary transition">HypeWare</a> 
+    <span>/</span>
+    <a href="{{ url_for('collection', gender=product.gender) }}" class="hover:text-primary transition">{{ product.gender|capitalize }}</a>
+    <span>/</span>
+    <span class="text-black dark:text-white font-bold">{{ product.nama }}</span>
+  </nav>
+
+  <!-- Product Detail Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+    <!-- Product Images -->
+    <div class="lg:col-span-7">
+      <div class="aspect-square bg-gray-100 dark:bg-stone-900 overflow-hidden mb-4 border border-stone-200 dark:border-stone-800">
+        <img id="main-image" class="w-full h-full object-cover" src="{{ product.img }}" alt="{{ product.nama }}" />
+      </div>
+      <div class="grid grid-cols-4 gap-3">
+        <div class="aspect-square bg-stone-100 dark:bg-stone-900 border-2 border-primary overflow-hidden cursor-pointer">
+          <img src="{{ product.img }}" alt="Thumbnail" class="w-full h-full object-cover">
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Info -->
+    <div class="lg:col-span-5">
+      <div class="sticky top-24">
+        <span class="text-xs font-bold text-primary uppercase tracking-widest">{{ product.categoryName }} • {{ product.gender|capitalize }}</span>
+        <h1 class="text-2xl md:text-3xl font-display font-bold uppercase mt-1 leading-tight">{{ product.nama }}</h1>
+        <p class="text-2xl font-bold mt-4 text-primary">{{ product.harga }}</p>
+
+        <!-- Product Options -->
+        <div class="mt-8 space-y-6">
+          <!-- Size Selection -->
+          <div>
+            <div class="flex justify-between items-center mb-2">
+              <h3 class="font-bold text-xs uppercase tracking-wider">PILIH UKURAN</h3>
+              <span id="selected-size-label" class="text-xs text-stone-500 font-medium">Ukuran: M</span>
+            </div>
+            <div class="flex flex-wrap gap-2" id="size-container">
+              {% for s in ['S', 'M', 'L', 'XL', 'XXL'] %}
+              <button 
+                type="button" 
+                class="size-btn px-4 py-2 border text-xs font-bold transition {% if s == 'M' %}border-black dark:border-white bg-black dark:bg-white text-white dark:text-black{% else %}border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:border-primary{% endif %}"
+                data-size="{{ s }}">
+                {{ s }}
+              </button>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Quantity -->
+          <div>
+            <h3 class="font-bold text-xs uppercase tracking-wider mb-2">JUMLAH</h3>
+            <div class="flex items-center gap-2">
+              <button id="qty-minus" class="w-10 h-10 border border-stone-300 dark:border-stone-700 flex items-center justify-center hover:bg-stone-100 dark:hover:bg-stone-800 transition">
+                <span class="material-icons-outlined text-sm">remove</span>
+              </button>
+              <input type="number" id="qty-input" value="1" min="1" max="10" class="w-14 text-center border border-stone-300 dark:border-stone-700 py-2 bg-transparent text-sm font-bold text-black dark:text-white" readonly>
+              <button id="qty-plus" class="w-10 h-10 border border-stone-300 dark:border-stone-700 flex items-center justify-center hover:bg-stone-100 dark:hover:bg-stone-800 transition">
+                <span class="material-icons-outlined text-sm">add</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-8 space-y-3">
+          <button id="btn-add-cart" class="w-full bg-primary text-white py-4 font-bold text-xs uppercase tracking-widest hover:bg-red-700 transition flex items-center justify-center gap-2">
+            <span class="material-icons-outlined text-sm">shopping_bag</span>
+            Tambah ke Keranjang
+          </button>
+          <button id="btn-buy-now" class="w-full border-2 border-black dark:border-white py-4 font-bold text-xs uppercase tracking-widest hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition">
+            Beli Sekarang
+          </button>
+        </div>
+
+        <!-- Product Description -->
+        <div class="mt-8 border-t border-stone-200 dark:border-stone-800 pt-6">
+          <h3 class="font-bold text-xs uppercase tracking-wider mb-2">DESKRIPSI PRODUK</h3>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            {{ product.deskripsi }}
+          </p>
+        </div>
+
+        <!-- Product Details -->
+        <div class="mt-6 border-t border-stone-200 dark:border-stone-800 pt-6 text-xs text-stone-500 space-y-2">
+          <div class="flex justify-between">
+            <span>Kategori:</span>
+            <span class="font-bold text-black dark:text-white">{{ product.categoryName }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Gender:</span>
+            <span class="font-bold text-black dark:text-white">{{ product.gender|capitalize }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Bahan / Material:</span>
+            <span class="font-bold text-black dark:text-white">Premium Cotton 100% Combed 30s</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Garansi:</span>
+            <span class="font-bold text-black dark:text-white">30 Hari Pengembalian & Penukaran Ukuran</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Related Products Section -->
+  {% if related_products %}
+  <div class="mt-20 border-t border-stone-200 dark:border-stone-800 pt-12">
+    <div class="flex justify-between items-end mb-6">
+      <div>
+        <span class="text-primary text-xs font-bold uppercase tracking-widest">Rekomendasi Serupa</span>
+        <h2 class="text-2xl font-display font-bold uppercase tracking-tight mt-1">Produk Terkait</h2>
+      </div>
+      <a href="{{ url_for('collection', gender=product.gender) }}" class="text-xs font-bold uppercase tracking-widest hover:text-primary transition">
+        Lihat Koleksi Lengkap →
+      </a>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      {% for rel in related_products %}
+      <div class="product-card group relative bg-white dark:bg-stone-900 border border-stone-100 dark:border-stone-800 flex flex-col justify-between">
+        <div class="relative aspect-square overflow-hidden bg-stone-100 dark:bg-stone-800">
+          <a href="{{ url_for('product_detail', product_id=rel.id) }}">
+            <img src="{{ rel.img }}" alt="{{ rel.nama }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          </a>
+        </div>
+        <div class="p-4">
+          <span class="text-[10px] text-stone-400 uppercase tracking-widest">{{ rel.categoryName }}</span>
+          <h4 class="font-bold text-xs uppercase line-clamp-2 mt-1 mb-2 hover:text-primary transition">
+            <a href="{{ url_for('product_detail', product_id=rel.id) }}">{{ rel.nama }}</a>
+          </h4>
+          <span class="text-primary font-bold text-sm">{{ rel.harga }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  let selectedSize = "M";
+  let quantity = 1;
+
+  const currentProduct = {
+    id: "{{ product.id }}",
+    nama: "{{ product.nama }}",
+    harga: "{{ product.harga }}",
+    priceNumeric: {{ product.priceNumeric }},
+    img: "{{ product.img }}",
+    category: "{{ product.category }}",
+    gender: "{{ product.gender }}"
+  };
+
+  // Size buttons
+  document.querySelectorAll(".size-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".size-btn").forEach(b => {
+        b.className = "size-btn px-4 py-2 border text-xs font-bold transition border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:border-primary";
+      });
+      btn.className = "size-btn px-4 py-2 border text-xs font-bold transition border-black dark:border-white bg-black dark:bg-white text-white dark:text-black";
+      selectedSize = btn.getAttribute("data-size");
+      document.getElementById("selected-size-label").textContent = `Ukuran: ${selectedSize}`;
+    });
+  });
+
+  // Quantity controls
+  const qtyInput = document.getElementById("qty-input");
+  document.getElementById("qty-minus").addEventListener("click", () => {
+    if (quantity > 1) {
+      quantity--;
+      qtyInput.value = quantity;
+    }
+  });
+  document.getElementById("qty-plus").addEventListener("click", () => {
+    if (quantity < 10) {
+      quantity++;
+      qtyInput.value = quantity;
+    }
+  });
+
+  // Add to cart
+  document.getElementById("btn-add-cart").addEventListener("click", () => {
+    if (window.HypewareCart) {
+      window.HypewareCart.addToCart(currentProduct, selectedSize, quantity);
+    }
+  });
+
+  // Buy now (add to cart and redirect)
+  document.getElementById("btn-buy-now").addEventListener("click", () => {
+    if (window.HypewareCart) {
+      window.HypewareCart.addToCart(currentProduct, selectedSize, quantity);
+      window.location.href = "{{ url_for('cart') }}";
+    }
+  });
+</script>
+{% endblock %}
